@@ -18,11 +18,18 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/donation" element={<DonationPage />} />
+        <Route path="/courses" element={<CourseEnrollment />} />
 
         {/* Protected Routes */}
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/courses/new" element={
+          <ProtectedRoute role="admin">
+            <CreateCourse />
           </ProtectedRoute>
         } />
         
