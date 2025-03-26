@@ -1,0 +1,175 @@
+/* Navbar.css */
+.navbar {
+    width: 100%;
+    z-index: 1000;
+    background-color: transparent;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+  
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative; /* Added for mobile menu positioning */
+}
+  
+.nav-logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2ecc71;
+    text-decoration: none;
+}
+  
+.nav-menu,
+.nav-auth {
+    display: flex;
+    gap: 1.5rem;
+}
+  
+/* Default style for all nav links (no boxes) */
+.nav-menu a,
+.nav-auth a,
+.nav-auth button {
+    color: #2ecc71;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    border: none;
+}
+  
+/* Style only for Donate and Register links */
+.nav-menu a[href="/donation"],
+.register-btn {
+    border: 1px solid #2ecc71 !important;
+    border-radius: 4px;
+}
+
+/* Hover effects */
+.nav-menu a:hover,
+.nav-auth a:hover {
+    color: #27ae60;
+    text-decoration: underline;
+}
+  
+/* Special hover for boxed buttons */
+.nav-menu a[href="/donation"]:hover,
+.register-btn:hover {
+    background-color: rgba(46, 204, 113, 0.1);
+    text-decoration: none;
+}
+  
+.nav-menu a.active,
+.nav-auth a.active {
+    font-weight: bold;
+    color: #27ae60;
+    background-color: transparent;
+}
+  
+.register-btn {
+    background-color: #2ecc71 !important;
+    color: white !important;
+}
+  
+.nav-auth button {
+    cursor: pointer;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    background-color: transparent;
+    border-radius: 4px;
+}
+  
+.nav-auth button:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+}
+  
+.mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #2ecc71;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+}
+  
+/* Responsive styles - Mobile Menu */
+@media (max-width: 768px) {
+    .nav-menu,
+    .nav-auth {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%; /* Changed from 70px to be relative to navbar height */
+        left: 0;
+        background-color: white;
+        padding: 1rem 2rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+        gap: 0.5rem;
+    }
+  
+    .nav-menu.active,
+    .nav-auth.active {
+        display: flex;
+    }
+  
+    .mobile-menu-button {
+        display: block;
+    }
+
+    .mobile-menu-button.active {
+        transform: rotate(90deg);
+    }
+  
+    .nav-container {
+        flex-wrap: wrap;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Mobile menu link styles */
+    .nav-menu a,
+    .nav-auth a,
+    .nav-auth button {
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-menu a:last-child,
+    .nav-auth a:last-child,
+    .nav-auth button:last-child {
+        border-bottom: none;
+    }
+
+    /* Donate and Register buttons in mobile */
+    .nav-menu a[href="/donation"],
+    .register-btn {
+        border: 1px solid #2ecc71 !important;
+        border-radius: 4px;
+        padding: 0.6rem !important;
+        margin: 0.5rem 0;
+        display: block;
+    }
+
+    /* Active state for mobile */
+    .nav-menu a.active,
+    .nav-auth a.active {
+        color: #27ae60;
+        background-color: transparent;
+    }
+
+    /* Hover states for mobile */
+    .nav-menu a:hover,
+    .nav-auth a:hover {
+        background-color: rgba(46, 204, 113, 0.05);
+    }
+}
