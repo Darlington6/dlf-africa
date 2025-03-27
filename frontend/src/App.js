@@ -7,18 +7,23 @@ import Courses from "./pages/Courses";
 import Mentorship from "./pages/Mentorship";
 import DonationPage from "./pages/DonationPage";
 import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
-import CourseEnrollment from "./components/CourseEnrollment"; // Add this import
+import CourseEnrollment from "./components/CourseEnrollment";
+import CreateCourse from "./components/CreateCourse";
 
 const App = () => {
   return (
     <Router>
       <Navbar />
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/donation" element={<DonationPage />} />
-        <Route path="/courses" element={<CourseEnrollment />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Protected Routes */}
         <Route path="/dashboard" element={
@@ -28,19 +33,17 @@ const App = () => {
         } />
 
         <Route path="/admin/courses/new" element={
-          <ProtectedRoute role="admin">
+          <ProtectedRoute adminOnly={true}>
             <CreateCourse />
           </ProtectedRoute>
         } />
         
-        {/* Updated Courses Route */}
         <Route path="/courses" element={
           <ProtectedRoute>
             <Courses />
           </ProtectedRoute>
         } />
         
-        {/* Add new route for enrollment */}
         <Route path="/courses/enroll/:courseId" element={
           <ProtectedRoute>
             <CourseEnrollment />

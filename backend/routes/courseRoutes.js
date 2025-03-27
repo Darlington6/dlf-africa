@@ -5,14 +5,16 @@ const authController = require('../controllers/authController');
 
 // Admin routes
 router.post('/', 
-  authController.protect, 
+  authController.protect,
   authController.restrictTo('admin'),
   courseController.createCourse
 );
 
-// Student routes
+// Public routes
 router.get('/', courseController.getAllCourses);
-router.post('/:courseId/enroll', 
+
+// Protected student routes
+router.post('/:courseId/enroll',
   authController.protect,
   courseController.enrollCourse
 );

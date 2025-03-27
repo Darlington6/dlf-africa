@@ -1,28 +1,41 @@
 const Course = require('../models/Course');
 
-// Admin - Create Course
-exports.createCourse = async (req, res) => {
+exports.getAllCourses = async (req, res) => {
   try {
-    const course = await Course.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      data: { course }
+    const courses = await Course.find();
+    res.status(200).json({
+      success: true,
+      data: courses
     });
   } catch (err) {
-    res.status(400).json({
-      status: 'fail',
+    res.status(500).json({
+      success: false,
       message: err.message
     });
   }
 };
 
-// Student - Enroll in Course
+exports.createCourse = async (req, res) => {
+  try {
+    const course = await Course.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: course
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message
+    });
+  }
+};
+
 exports.enrollCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.courseId);
     if (!course) {
       return res.status(404).json({
-        status: 'fail',
+        success: false,
         message: 'Course not found'
       });
     }
@@ -30,7 +43,7 @@ exports.enrollCourse = async (req, res) => {
     // Check if already enrolled
     if (course.enrolledStudents.includes(req.user._id)) {
       return res.status(400).json({
-        status: 'fail',
+        success: false,
         message: 'Already enrolled in this course'
       });
     }
@@ -40,34 +53,12 @@ exports.enrollCourse = async (req, res) => {
     await course.save();
 
     res.status(200).json({
-      status: 'success',
-      data: { course }
+      success: true,
+      data: course
     });
   } catch (err) {
     res.status(500).json({
-      status: 'error',
-      message: err.message
-    });
-  }
-};
-
-// Get All Courses (with enrollment status)
-exports.getAllCourses = async (req, res) => {
-  try {
-    const courses = await Course.find();
-    const coursesWithStatus = courses.map(course => ({
-      ...course.toObject(),
-      isEnrolled: req.user?.enrolledCourses?.includes(course._id) || false
-    }));
-    
-    res.status(200).json({
-      status: 'success',
-      results: courses.length,
-      data: { courses: coursesWithStatus }
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: 'error',
+      success: false,
       message: err.message
     });
   }

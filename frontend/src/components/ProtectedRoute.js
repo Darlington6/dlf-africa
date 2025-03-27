@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react"; // Added useState import
-import { Navigate, useLocation } from "react-router-dom"; // Added useLocation
+import React, { useState, useEffect } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const [isValidating, setIsValidating] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const location = useLocation(); // Proper way to access location
+  const location = useLocation();
 
   useEffect(() => {
     const validateToken = async () => {
       const token = localStorage.getItem("token");
+      // Removed unused storedUser variable
       
       if (!token) {
         setIsValidating(false);
@@ -21,28 +22,30 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
           headers: { Authorization: `Bearer ${token}` }
         });
 
-        if (adminOnly && !response.data.user.isAdmin) {
-          setIsAuthorized(false);
-        } else {
-          setIsAuthorized(true);
+        const isAdminAuthorized = !adminOnly || (adminOnly && response.data.user?.isAdmin);
+        setIsAuthorized(isAdminAuthorized);
+        
+        if (response.data.user) {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
         }
       } catch (error) {
         console.error("Token validation failed:", error);
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
       } finally {
         setIsValidating(false);
       }
     };
 
     validateToken();
-  }, [adminOnly]);
+  }, [adminOnly, location.pathname]);
 
   if (isValidating) {
     return <div className="auth-loading">Verifying session...</div>;
   }
 
   if (!isAuthorized) {
-    return <Navigate to="/login" state={{ from: location.pathname }} />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;

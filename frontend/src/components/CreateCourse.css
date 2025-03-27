@@ -1,0 +1,35 @@
+.course-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .course-form input,
+  .course-form textarea,
+  .course-form select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .course-form textarea {
+    min-height: 120px;
+  }
+  
+  .course-form button {
+    background: #2ecc71;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .course-form button:hover {
+    background: #27ae60;
+  }
