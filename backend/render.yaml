@@ -5,10 +5,10 @@ databases:
 
 services:
   - type: web
-    name: dlf-africa-backend
-    runtime: node
-    buildCommand: npm install
-    startCommand: npm start
+    name: dlf-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
     envVars:
       - key: MONGODB_URI
         fromDatabase:
