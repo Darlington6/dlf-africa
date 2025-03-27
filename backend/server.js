@@ -7,7 +7,20 @@ const mongoose = require("mongoose");
 // Load environment variables
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-// Database connection
+// Initialize app
+const app = express();
+
+// Enhanced CORS configuration
+app.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  credentials: true
+}));
+
+// Middleware
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Database connection with safe index handling
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
@@ -17,27 +30,18 @@ const connectDB = async () => {
       maxPoolSize: 10
     });
     console.log('MongoDB connected successfully');
-    
-    // Verify indexes
-    const User = require('./models/User');
-    await User.syncIndexes();
-    console.log('User indexes verified');
+
+    // Safe index synchronization
+    if (process.env.NODE_ENV !== 'production') {
+      const User = require('./models/User');
+      await User.syncIndexes({ background: true });
+      console.log('Indexes synchronized safely');
+    }
   } catch (err) {
     console.error('MongoDB connection error:', err.message);
     process.exit(1);
   }
 };
-
-// Initialize app
-const app = express();
-
-// Middleware
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
-  credentials: true
-}));
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
@@ -58,7 +62,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// Error handling
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(`[${new Date().toISOString()}] Error:`, err.message);
   

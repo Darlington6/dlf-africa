@@ -57,8 +57,8 @@ const UserSchema = new mongoose.Schema({
   },
   enrolledCourses: [{ 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Course',
-    index: true 
+    ref: 'Course'
+    // Removed index: true - will be handled separately
   }],
   createdAt: { 
     type: Date, 
@@ -121,8 +121,6 @@ UserSchema.virtual('isActive').get(function() {
   return true;
 });
 
-// Only non-unique indexes (unique indexes are handled by schema options)
-UserSchema.index({ role: 1 });
-UserSchema.index({ enrolledCourses: 1 });
+// No index definitions here - handled through schema options and syncIndexes()
 
 module.exports = mongoose.model('User', UserSchema);
