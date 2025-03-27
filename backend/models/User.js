@@ -38,7 +38,6 @@ const UserSchema = new mongoose.Schema({
     select: false,
     validate: {
       validator: function(v) {
-        // Only validate password if not using Google Auth
         return this.isGoogleAuth ? true : v && v.length >= 8;
       },
       message: 'Password is required and must be at least 8 characters'
@@ -59,7 +58,7 @@ const UserSchema = new mongoose.Schema({
   enrolledCourses: [{ 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Course',
-    index: true
+    index: true 
   }],
   createdAt: { 
     type: Date, 
@@ -74,12 +73,12 @@ const UserSchema = new mongoose.Schema({
     default: false
   }
 }, {
-  timestamps: true, // Automatically manage createdAt and updatedAt
+  timestamps: true,
   toJSON: { 
     virtuals: true,
     transform: function(doc, ret) {
-      delete ret.password; // Always remove password from JSON output
-      delete ret.__v; // Remove version key
+      delete ret.password;
+      delete ret.__v;
       return ret;
     }
   },
@@ -93,7 +92,7 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-// Middleware to hash password
+// Password hashing middleware
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password') || this.isGoogleAuth) return next();
   
@@ -105,7 +104,7 @@ UserSchema.pre('save', async function(next) {
   }
 });
 
-// Method to compare passwords
+// Password comparison method
 UserSchema.methods.comparePassword = async function(candidatePassword) {
   if (this.isGoogleAuth) {
     throw new Error('Google authenticated users should use Google login');
@@ -113,19 +112,16 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// Virtual for full name
+// Virtuals
 UserSchema.virtual('fullName').get(function() {
   return `${this.firstName} ${this.lastName}`;
 });
 
-// Virtual for user's active status (could be enhanced with last activity tracking)
 UserSchema.virtual('isActive').get(function() {
-  return true; // Default to true, could implement actual logic
+  return true;
 });
 
-// Indexes for better query performance
-UserSchema.index({ email: 1 }, { unique: true });
-UserSchema.index({ username: 1 }, { unique: true });
+// Only non-unique indexes (unique indexes are handled by schema options)
 UserSchema.index({ role: 1 });
 UserSchema.index({ enrolledCourses: 1 });
 
