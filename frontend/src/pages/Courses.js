@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Courses.css";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,10 +13,10 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/courses");
+        const response = await axios.get(`${API_URL}/api/courses`);
         setCourses(response.data);
       } catch (err) {
-        setError("Failed to load courses. Please try again later.");
+        setError(err.response?.data?.message || "Failed to load courses. Please try again later.");
         console.error("Error fetching courses:", err);
       } finally {
         setLoading(false);

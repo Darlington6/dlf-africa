@@ -15,7 +15,7 @@ import CreateCourse from "./components/CreateCourse";
 
 const App = () => {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Navbar />
       <Routes>
         {/* Public Routes */}
@@ -55,6 +55,9 @@ const App = () => {
             <Mentorship />
           </ProtectedRoute>
         } />
+
+        {/* Fallback route for 404 errors */}
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   );
