@@ -1,60 +1,54 @@
-DLF Africa 🌍🚀
-DLF Africa is a web platform dedicated to bridging the digital divide by providing digital literacy training, mentorship programs, and access to online learning resources.
+# **DLF Africa** 🌍🚀  
 
-Table of Contents
-Features
+**DLF Africa** is a web platform dedicated to bridging the digital divide by providing digital literacy training, mentorship programs, and access to online learning resources.  
 
-Technologies Used
+---
 
-Project Structure
+## **Table of Contents**  
+- [Features](#features)  
+- [Technologies Used](#technologies-used)  
+- [Project Structure](#project-structure)  
+- [Prerequisites](#prerequisites)  
+- [Installation](#installation)  
+- [Environment Variables Setup](#environment-variables-setup)  
+- [Running the Application](#running-the-application)  
+- [Deployment](#deployment)  
+- [Contributing](#contributing)  
+- [License](#license)  
 
-Prerequisites
+---
 
-Installation
+## **Features**  
+✅ User authentication (Email, Google Sign-In)  
+✅ Course enrollment system  
+✅ Mentorship portal  
+✅ Payment integration for donations (Paystack)  
+✅ Secure API routes with JWT authentication  
 
-Environment Variables Setup
+---
 
-Running the Application
+## **Technologies Used**  
 
-Deployment
+### **Frontend**  
+- **React.js** (UI framework)  
+- **Google Authentication** (User authentication)  
+- **CSS** (Styling)  
 
-Contributing
+### **Backend**  
+- **Node.js** (Runtime)  
+- **Express.js** (Backend framework)  
+- **MongoDB** (Database)  
+- **Mongoose** (ODM for MongoDB)  
+- **Paystack** (Donation payment processing)  
+- **Dotenv** (Environment variable management)  
 
-License
+---
 
-Features
-✅ User authentication (Email, Google Sign-In)
-✅ Course enrollment system
-✅ Mentorship portal
-✅ Payment integration for donations (Paystack)
-✅ Secure API routes with JWT authentication
-
-Technologies Used
-Frontend
-React.js (UI framework)
-
-Google Authentication (User authentication)
-
-CSS (Styling)
-
-Backend
-Node.js (Runtime)
-
-Express.js (Backend framework)
-
-MongoDB (Database)
-
-Mongoose (ODM for MongoDB)
-
-Paystack (Donation payment processing)
-
-Dotenv (Environment variable management)
-
-Project Structure
-
+## **Project Structure**  
+```bash
 DLF-Africa/
 │── backend/           # Backend API (Node.js + Express)
-│── frontend/          # Frontend (React)
+│── frontend/          # Frontend (React + Vite)
 │── .gitignore
 │── README.md
 └── package.json       # Project metadata
@@ -76,28 +70,26 @@ cd dlf-africa
 Backend Setup
 cd backend
 npm install
+
 Frontend Setup
 Open a new terminal and run:
 cd frontend
 npm install
+
 Environment Variables Setup
 You need to configure environment variables for both the backend and frontend.
 
 Backend (backend/.env)
 Create a .env file in the backend folder and add:
-
 env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 GOOGLE_CLIENT_ID=your_google_client_id
 PAYSTACK_SECRET_KEY=your_paystack_secret
-PAYSTACK_PUBLIC_KEY=your_paystack_public_key
 
 Frontend (frontend/.env)
 Create a .env file in the frontend folder and add:
-
-env
 REACT_APP_API_URL=http://localhost:5000
 
 🔹 Replace the values with your actual credentials.
@@ -106,7 +98,6 @@ REACT_APP_API_URL=http://localhost:5000
 Running the Application
 Backend
 Start the backend server:
-
 cd backend
 npm start
 The API should be running at:
@@ -129,7 +120,6 @@ Connect your GitHub Repository
 
 Set the Build Command:
 npm install
-
 Set the Start Command:
 npm start
 Configure Environment Variables in Render’s dashboard
@@ -150,11 +140,14 @@ Deploy! 🎉
 Contributing
 Fork the repository
 
-Create a new branch (git checkout -b feature-name)
+Create a new branch
+git checkout -b feature-name
 
-Commit your changes (git commit -m "Added feature")
+Commit your changes
+git commit -m "Added feature"
 
-Push to the branch (git push origin feature-name)
+Push to the branch
+git push origin feature-name
 
 Open a Pull Request
 
@@ -162,4 +155,3 @@ License
 This project is licensed under the MIT License.
 
 📌 DLF Africa is committed to bridging the digital divide. Thank you for contributing to our mission! 🚀🌍
-
