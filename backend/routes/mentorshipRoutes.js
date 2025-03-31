@@ -1,12 +1,12 @@
 const express = require("express");
 const Mentorship = require("../models/Mentorship");
-const { protect } = require("./middleware/authMiddleware");
+// const authMiddleware = require("../middleware/authMiddleware")
 const { check, validationResult } = require("express-validator");
 
 const router = express.Router();
 
 // Apply auth middleware to protect all mentorship routes
-router.use(protect);
+// router.use(protect);
 
 // Validation rules for mentorship request
 const mentorshipRequestValidation = [
