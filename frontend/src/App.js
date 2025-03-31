@@ -6,6 +6,7 @@ import About from "./pages/About";
 import Courses from "./pages/Courses";
 import Mentorship from "./pages/Mentorship";
 import DonationPage from "./pages/DonationPage";
+import Footer from "./components/Footer";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/donation" element={<DonationPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/footer" element={<Footer/>} />
 
         {/* Protected Routes */}
         <Route path="/dashboard" element={

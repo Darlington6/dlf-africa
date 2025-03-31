@@ -1,5 +1,6 @@
 import React from "react";
-import "./About.css"; // We'll create this CSS file
+import "./About.css"; // Styling file
+import Footer from "../components/Footer"; // Importing the Footer component
 
 const About = () => {
   return (
@@ -47,7 +48,7 @@ const About = () => {
         <div className="what-we-do">
           <div>
             <span>
-            <h2 id="www">What We Do</h2>
+              <h2 id="www">What We Do</h2>
             </span>
           </div>
     
@@ -115,6 +116,9 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

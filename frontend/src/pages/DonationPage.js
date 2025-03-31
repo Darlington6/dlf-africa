@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { PaystackButton } from "react-paystack";
 import axios from "axios";
 import "../components/DonationPage.css";
+import Footer from "../components/Footer"; // Import the Footer component
 
 const DonationPage = () => {
   const publicKey = "pk_test_297234307334246a36e229647fa1091dedb2b63b";
@@ -318,6 +319,8 @@ const DonationPage = () => {
           <PaystackButton {...paystackProps} />
         </form>
       </div>
+      {/* Footer Added Here */}
+      <Footer />
     </div>
   );
 };
