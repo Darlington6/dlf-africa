@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import "../components/Navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
