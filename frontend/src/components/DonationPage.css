@@ -30,8 +30,10 @@
 
 .donation-header-image {
   width: 90%;
-  max-width: 900px;
-  height: 300px;
+  max-width: 400px; /* Reduced from 900px to better suit portrait */
+  height: auto; /* Changed from fixed 300px to auto */
+  max-height: 600px; /* Added max-height for very tall images */
+  aspect-ratio: 2/3; /* Maintains portrait aspect ratio */
   border-radius: 8px;
   overflow: hidden;
   margin: 0 auto 30px;
@@ -52,11 +54,10 @@
 .donation-header-image .header-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain; /* Changed from 'cover' to 'contain' */
+  object-position: center center; /* Changed from 'center top' */
   display: block;
 }
-
 /* Header section styles */
 .donation-header {
   text-align: center;
