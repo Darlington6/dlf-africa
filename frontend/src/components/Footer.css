@@ -1,7 +1,8 @@
 /* ===== GLOBAL RESET ===== */
-body {
+html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
     overflow-x: hidden;
   }
   
@@ -12,12 +13,7 @@ body {
     padding: 3rem 0;
     margin-top: 4rem;
     font-family: 'Segoe UI', system-ui, sans-serif;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    width: 100%;
   }
   
   .footer-container {
