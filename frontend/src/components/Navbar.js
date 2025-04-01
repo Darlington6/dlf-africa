@@ -16,6 +16,11 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
+  // Close mobile menu when clicking any link
+  const closeMobileMenu = () => {
+    if (mobileMenuOpen) setMobileMenuOpen(false);
+  };
+
   const navLinks = [
     { path: "/", name: "Home" },
     { path: "/about", name: "About" },
@@ -39,7 +44,7 @@ const Navbar = () => {
       <div className="nav-container">
         {/* Logo */}
         <div className="nav-logo">
-          <NavLink to="/">
+          <NavLink to="/" onClick={closeMobileMenu}>
             <img 
               src="/logo.png" 
               alt="DLF Africa Logo" 
@@ -59,7 +64,7 @@ const Navbar = () => {
                   link.path === "/donation" ? "donation-link" : ""
                 }`
               }
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               {link.name}
             </NavLink>
@@ -74,7 +79,7 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={link.isPrimary ? "register-btn" : ""}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
               >
                 {link.icon && <span className="icon">{link.icon}</span>}
                 {link.name}
@@ -84,7 +89,7 @@ const Navbar = () => {
                 key={link.name}
                 onClick={() => {
                   link.action();
-                  setMobileMenuOpen(false);
+                  closeMobileMenu();
                 }}
                 className="logout-btn"
               >
@@ -99,6 +104,7 @@ const Navbar = () => {
         <button
           className={`mobile-menu-button ${mobileMenuOpen ? "active" : ""}`}
           onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <FaTimes /> : <FaBars />}
         </button>

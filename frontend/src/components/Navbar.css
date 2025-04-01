@@ -1,4 +1,4 @@
-/* Navbar.css - Enhanced Version */
+/* Navbar.css - Final Enhanced Version */
 .navbar {
     width: 100%;
     z-index: 1000;
@@ -109,7 +109,7 @@
     transform: rotate(90deg);
 }
 
-/* Responsive Styles */
+/* Enhanced Mobile Menu Styles */
 @media (max-width: 768px) {
     .nav-menu,
     .nav-auth {
@@ -117,13 +117,15 @@
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: 100%;
+        top: 70px; /* Fixed position based on navbar height */
         left: 0;
         background-color: white;
-        padding: 1rem 2rem;
+        padding: 0; /* Changed from 2rem to prevent overflow */
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         z-index: 1000;
-        gap: 0.5rem;
+        gap: 0;
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
     }
   
     .nav-menu.active,
@@ -135,27 +137,42 @@
         display: block;
     }
 
+    /* Link items */
     .nav-menu a,
     .nav-auth a,
     .nav-auth button {
-        padding: 0.8rem 0;
+        padding: 1rem 2rem;
         border-bottom: 1px solid #f0f0f0;
         width: 100%;
-        text-align: center;
-        justify-content: center;
+        text-align: left;
+        margin: 0;
+        color: #333;
+        font-size: 1rem;
+        justify-content: flex-start;
     }
 
+    /* Remove border from last item */
     .nav-menu a:last-child,
     .nav-auth a:last-child,
     .nav-auth button:last-child {
         border-bottom: none;
     }
 
+    /* Special buttons */
     .nav-menu a[href="/donation"],
     .register-btn,
     .logout-btn {
-        padding: 0.8rem !important;
-        margin: 0.5rem 0;
-        display: block;
+        margin: 1rem auto;
+        width: 90%;
+        text-align: center;
+        border: 1px solid !important;
+        border-radius: 4px;
+    }
+
+    /* Active state */
+    .nav-menu a.active,
+    .nav-auth a.active {
+        background-color: rgba(46, 204, 113, 0.05);
+        font-weight: bold;
     }
 }
