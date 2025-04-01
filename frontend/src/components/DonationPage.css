@@ -18,25 +18,39 @@
   padding-top: 70px; /* Navbar height */
 }
 
-/* Header image styles */
-.donation-header-image {
-  width: 100vw;
-  height: 350px; /* Slightly taller */
+/* Updated Donation Header Image Styles */
+.donation-header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
   overflow: hidden;
-  margin: -20px -30px 30px -30px; /* Negative margins to pull to edges */
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+}
+
+.donation-header-image {
+  width: 100%;
+  height: 350px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 auto 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  animation: slideIn 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .donation-header-image .header-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top; /* Focus on top part of image */
+  object-position: center top;
   display: block;
 }
 
