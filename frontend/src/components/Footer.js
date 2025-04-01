@@ -31,7 +31,7 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Contact</h3>
           <p>info@dlfafrica.org</p>
-          <p>+234 123 456 7890</p>
+          <p>+233 24 644 8694</p>
         </div>
 
         <div className="footer-section">
