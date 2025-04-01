@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -43,6 +44,43 @@ const Footer = () => {
           <h3 style={{ fontSize: "1.2rem", marginBottom: "15px" }}>Contact</h3>
           <p style={{ color: "#bdc3c7" }}>info@dlfafrica.org</p>
           <p style={{ color: "#bdc3c7" }}>+234 123 456 7890</p>
+        </div>
+
+        {/* New Social Media Section */}
+        <div>
+          <h3 style={{ fontSize: "1.2rem", marginBottom: "15px" }}>Follow Us</h3>
+          <div style={{ display: "flex", gap: "15px" }}>
+            <a 
+              href="https://facebook.com/dlfafrica" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: "#bdc3c7", fontSize: "1.5rem" }}
+              aria-label="Facebook"
+            >
+              <FaFacebook />
+            </a>
+            <a 
+              href="https://linkedin.com/company/dlfafrica" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: "#bdc3c7", fontSize: "1.5rem" }}
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin />
+            </a>
+            <a 
+              href="https://instagram.com/dlfafrica" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: "#bdc3c7", fontSize: "1.5rem" }}
+              aria-label="Instagram"
+            >
+              <FaInstagram />
+            </a>
+          </div>
+          <p style={{ color: "#bdc3c7", marginTop: "15px" }}>
+            Connect with us on social media
+          </p>
         </div>
       </div>
       
