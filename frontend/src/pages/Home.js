@@ -18,7 +18,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px"}}>
       {/* Main Content */}
       <h1 style={{ 
         textAlign: "center", 
