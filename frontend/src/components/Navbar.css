@@ -1,10 +1,12 @@
-/* Navbar.css */
+/* Navbar.css - Enhanced Version */
 .navbar {
     width: 100%;
     z-index: 1000;
-    background-color: transparent;
+    background-color: white;
     padding: 1rem 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
 }
   
 .nav-container {
@@ -14,23 +16,23 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
-    position: relative; /* Added for mobile menu positioning */
+    position: relative;
 }
   
 .nav-logo a {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2ecc71;
+    display: flex;
+    align-items: center;
     text-decoration: none;
 }
-  
+
+/* Navigation Links */
 .nav-menu,
 .nav-auth {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
 }
-  
-/* Default style for all nav links (no boxes) */
+
 .nav-menu a,
 .nav-auth a,
 .nav-auth button {
@@ -40,66 +42,74 @@
     transition: all 0.3s ease;
     background-color: transparent;
     border: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
-  
-/* Style only for Donate and Register links */
-.nav-menu a[href="/donation"],
-.register-btn {
+
+/* Active Link */
+.nav-menu a.active,
+.nav-auth a.active {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+/* Donate Link Special Style */
+.nav-menu a[href="/donation"] {
     border: 1px solid #2ecc71 !important;
     border-radius: 4px;
 }
 
-/* Hover effects */
+/* Register Button */
+.register-btn {
+    background-color: #2ecc71 !important;
+    color: white !important;
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem !important;
+}
+
+/* Logout Button */
+.logout-btn {
+    border: 1px solid #e74c3c !important;
+    color: #e74c3c !important;
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem !important;
+}
+
+/* Hover Effects */
 .nav-menu a:hover,
 .nav-auth a:hover {
     color: #27ae60;
-    text-decoration: underline;
 }
-  
-/* Special hover for boxed buttons */
+
 .nav-menu a[href="/donation"]:hover,
 .register-btn:hover {
     background-color: rgba(46, 204, 113, 0.1);
     text-decoration: none;
 }
-  
-.nav-menu a.active,
-.nav-auth a.active {
-    font-weight: bold;
-    color: #27ae60;
-    background-color: transparent;
-}
-  
-.register-btn {
-    background-color: #2ecc71 !important;
-    color: white !important;
-}
-  
-.nav-auth button {
-    cursor: pointer;
-    border: 1px solid #e74c3c;
-    color: #e74c3c;
-    background-color: transparent;
-    border-radius: 4px;
-}
-  
-.nav-auth button:hover {
+
+.logout-btn:hover {
     background-color: rgba(231, 76, 60, 0.1);
 }
-  
+
+/* Mobile Menu Button */
 .mobile-menu-button {
     display: none;
     background: none;
     border: none;
-    font-size: 1.5rem;
     color: #2ecc71;
+    font-size: 1.5rem;
     cursor: pointer;
-    z-index: 1001;
     padding: 0.5rem;
     transition: transform 0.3s ease;
 }
-  
-/* Responsive styles - Mobile Menu */
+
+.mobile-menu-button.active {
+    transform: rotate(90deg);
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
     .nav-menu,
     .nav-auth {
@@ -107,7 +117,7 @@
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: 100%; /* Changed from 70px to be relative to navbar height */
+        top: 100%;
         left: 0;
         background-color: white;
         padding: 1rem 2rem;
@@ -125,16 +135,6 @@
         display: block;
     }
 
-    .mobile-menu-button.active {
-        transform: rotate(90deg);
-    }
-  
-    .nav-container {
-        flex-wrap: wrap;
-        padding: 0.5rem 1rem;
-    }
-
-    /* Mobile menu link styles */
     .nav-menu a,
     .nav-auth a,
     .nav-auth button {
@@ -142,6 +142,7 @@
         border-bottom: 1px solid #f0f0f0;
         width: 100%;
         text-align: center;
+        justify-content: center;
     }
 
     .nav-menu a:last-child,
@@ -150,26 +151,11 @@
         border-bottom: none;
     }
 
-    /* Donate and Register buttons in mobile */
     .nav-menu a[href="/donation"],
-    .register-btn {
-        border: 1px solid #2ecc71 !important;
-        border-radius: 4px;
-        padding: 0.6rem !important;
+    .register-btn,
+    .logout-btn {
+        padding: 0.8rem !important;
         margin: 0.5rem 0;
         display: block;
-    }
-
-    /* Active state for mobile */
-    .nav-menu a.active,
-    .nav-auth a.active {
-        color: #27ae60;
-        background-color: transparent;
-    }
-
-    /* Hover states for mobile */
-    .nav-menu a:hover,
-    .nav-auth a:hover {
-        background-color: rgba(46, 204, 113, 0.05);
     }
 }
