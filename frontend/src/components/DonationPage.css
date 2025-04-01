@@ -28,7 +28,7 @@
   overflow: hidden;
 }
 
-.donation-header-image {
+/* .donation-header-image {
   width: 90%;
   max-width: 900px;
   height: 300px;
@@ -55,7 +55,7 @@
   object-fit: cover;
   object-position: center top;
   display: block;
-}
+} */
 
 /* Header section styles */
 .donation-header {
