@@ -1,100 +1,101 @@
-/* Navbar.css - Final Enhanced Version */
+/* Navbar Base Styles */
 .navbar {
     width: 100%;
-    z-index: 1000;
-    background-color: yellow;
-    padding: 1rem 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: #FFD700;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
-}
+    z-index: 1000;
+  }
   
-.nav-container {
+  .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 1rem 2rem;
     position: relative;
-}
+  }
   
-.nav-logo a {
+  .nav-logo .logo-img {
+    height: 40px;
+    transition: transform 0.3s ease;
+  }
+  
+  .nav-logo .logo-img:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Desktop Navigation */
+  .nav-menu,
+  .nav-auth {
     display: flex;
     align-items: center;
-    text-decoration: none;
-}
-
-/* Navigation Links */
-.nav-menu,
-.nav-auth {
-    display: flex;
+  }
+  
+  .nav-menu {
     gap: 1.5rem;
-    align-items: center;
-}
-
-.nav-menu a,
-.nav-auth a,
-.nav-auth button {
+    margin-left: 2rem;
+  }
+  
+  .nav-auth {
+    gap: 1rem;
+    margin-left: auto;
+  }
+  
+  .nav-link,
+  .auth-link {
     color: #2ecc71;
     text-decoration: none;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    background-color: transparent;
-    border: none;
     font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* Active Link */
-.nav-menu a.active,
-.nav-auth a.active {
-    font-weight: bold;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover,
+  .auth-link:hover {
     color: #27ae60;
-}
-
-/* Donate Link Special Style */
-.nav-menu a[href="/donation"] {
-    border: 1px solid #2ecc71 !important;
+  }
+  
+  .nav-link.active::after,
+  .auth-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #27ae60;
+  }
+  
+  /* Special Buttons */
+  .donation-link {
+    border: 1px solid #2ecc71;
     border-radius: 4px;
-}
-
-/* Register Button */
-.register-btn {
-    background-color: #2ecc71 !important;
+    padding: 0.5rem 1rem !important;
+  }
+  
+  .register-btn {
+    background-color: #2ecc71;
     color: white !important;
     border-radius: 4px;
-    padding: 0.5rem 1.5rem !important;
-}
-
-/* Logout Button */
-.logout-btn {
-    border: 1px solid #e74c3c !important;
-    color: #e74c3c !important;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .logout-btn {
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
     border-radius: 4px;
-    padding: 0.5rem 1.5rem !important;
-}
-
-/* Hover Effects */
-.nav-menu a:hover,
-.nav-auth a:hover {
-    color: #27ae60;
-}
-
-.nav-menu a[href="/donation"]:hover,
-.register-btn:hover {
-    background-color: rgba(46, 204, 113, 0.1);
-    text-decoration: none;
-}
-
-.logout-btn:hover {
-    background-color: rgba(231, 76, 60, 0.1);
-}
-
-/* Mobile Menu Button */
-.mobile-menu-button {
+    padding: 0.5rem 1.5rem;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  /* Mobile Menu Button */
+  .mobile-menu-button {
     display: none;
     background: none;
     border: none;
@@ -102,77 +103,90 @@
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
-.mobile-menu-button.active {
-    transform: rotate(90deg);
-}
-
-/* Enhanced Mobile Menu Styles */
-@media (max-width: 768px) {
+    z-index: 1001;
+  }
+  
+  /* Mobile Menu Backdrop */
+  .mobile-menu-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .mobile-menu-backdrop.active {
+    display: block;
+    opacity: 1;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .nav-container {
+      padding: 1rem;
+    }
+  
+    .mobile-menu-button {
+      display: block;
+    }
+  
     .nav-menu,
     .nav-auth {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        position: absolute;
-        top: 70px; /* Fixed position based on navbar height */
-        left: 0;
-        background-color: white;
-        padding: 0; /* Changed from 2rem to prevent overflow */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        z-index: 1000;
-        gap: 0;
-        max-height: calc(100vh - 70px);
-        overflow-y: auto;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background-color: white;
+      flex-direction: column;
+      gap: 0;
+      padding: 1rem 0;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      max-height: calc(100vh - 70px);
+      overflow-y: auto;
     }
   
     .nav-menu.active,
     .nav-auth.active {
-        display: flex;
+      transform: translateY(0);
+      opacity: 1;
     }
   
-    .mobile-menu-button {
-        display: block;
+    .nav-link,
+    .auth-link,
+    .logout-btn {
+      width: 100%;
+      padding: 1rem 2rem;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+      color: #333;
+      font-size: 1rem;
     }
-
-    /* Link items */
-    .nav-menu a,
-    .nav-auth a,
-    .nav-auth button {
-        padding: 1rem 2rem;
-        border-bottom: 1px solid #f0f0f0;
-        width: 100%;
-        text-align: left;
-        margin: 0;
-        color: #333;
-        font-size: 1rem;
-        justify-content: flex-start;
+  
+    .nav-link.active::after,
+    .auth-link.active::after {
+      display: none;
     }
-
-    /* Remove border from last item */
-    .nav-menu a:last-child,
-    .nav-auth a:last-child,
-    .nav-auth button:last-child {
-        border-bottom: none;
+  
+    .nav-link.active,
+    .auth-link.active {
+      background-color: rgba(46, 204, 113, 0.05);
+      font-weight: bold;
     }
-
-    /* Special buttons */
-    .nav-menu a[href="/donation"],
+  
+    .donation-link,
     .register-btn,
     .logout-btn {
-        margin: 1rem auto;
-        width: 90%;
-        text-align: center;
-        border: 1px solid !important;
-        border-radius: 4px;
+      margin: 0.5rem auto;
+      width: calc(100% - 4rem);
+      text-align: center;
     }
-
-    /* Active state */
-    .nav-menu a.active,
-    .nav-auth a.active {
-        background-color: rgba(46, 204, 113, 0.05);
-        font-weight: bold;
-    }
-}
+  }

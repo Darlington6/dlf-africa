@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 import "../components/Navbar.css";
@@ -8,6 +8,17 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuOpen && !event.target.closest('.nav-container')) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [mobileMenuOpen]);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -16,10 +27,7 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
-  // Close mobile menu when clicking any link
-  const closeMobileMenu = () => {
-    if (mobileMenuOpen) setMobileMenuOpen(false);
-  };
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const navLinks = [
     { path: "/", name: "Home" },
@@ -42,18 +50,14 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* Logo */}
         <div className="nav-logo">
           <NavLink to="/" onClick={closeMobileMenu}>
-            <img 
-              src="/logo.png" 
-              alt="DLF Africa Logo" 
-              style={{ height: "40px" }}
-            />
+            <img src="/logo.png" alt="DLF Africa Logo" className="logo-img" />
           </NavLink>
         </div>
 
-        {/* Desktop Menu */}
+        <div className={`mobile-menu-backdrop ${mobileMenuOpen ? 'active' : ''}`}></div>
+        
         <div className={`nav-menu ${mobileMenuOpen ? "active" : ""}`}>
           {navLinks.map((link) => (
             <NavLink
@@ -71,14 +75,13 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Auth Links */}
         <div className={`nav-auth ${mobileMenuOpen ? "active" : ""}`}>
           {authLinks.map((link) => (
             link.path ? (
               <NavLink
                 key={link.path}
                 to={link.path}
-                className={link.isPrimary ? "register-btn" : ""}
+                className={link.isPrimary ? "register-btn" : "auth-link"}
                 onClick={closeMobileMenu}
               >
                 {link.icon && <span className="icon">{link.icon}</span>}
@@ -100,11 +103,11 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Menu Button */}
         <button
           className={`mobile-menu-button ${mobileMenuOpen ? "active" : ""}`}
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
