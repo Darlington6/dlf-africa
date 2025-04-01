@@ -71,19 +71,3 @@
 .auth-form button:hover {
   background: #27ae60;
 }
-
-footer {
-  background-color: #166534;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-
-footer a {
-  color: #90ee90;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}

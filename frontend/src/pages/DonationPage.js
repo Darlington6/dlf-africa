@@ -179,13 +179,13 @@ const DonationPage = () => {
 
   return (
     <div className="donation-page-container">
-      {/* <div className="donation-header-image">
+      <div className="donation-header-image">
         <img 
           src="/donation-header.jpeg"
           alt="Students learning digital skills" 
           className="header-image"
         />
-      </div> */}
+      </div>
 
       <div className="donation-header">
         <h1>Empower the Next Digital Generation</h1>
