@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
@@ -88,6 +88,26 @@ const Login = () => {
             Login
           </button>
         </form>
+        <p style={{ 
+          textAlign: 'center', 
+          marginTop: '1.5rem',
+          color: '#666'
+        }}>
+          Don't have an account?{' '}
+          <Link 
+            to="/register" 
+            style={{ 
+              color: '#003366',
+              fontWeight: '500',
+              textDecoration: 'none',
+              transition: 'color 0.3s'
+            }}
+            onMouseOver={(e) => e.target.style.color = '#002244'}
+            onMouseOut={(e) => e.target.style.color = '#003366'}
+          >
+            Register
+          </Link>
+        </p>
       </div>
     </div>
   );
