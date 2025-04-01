@@ -182,7 +182,7 @@ const DonationPage = () => {
       <div className="donation-header-image">
         <img 
           src="/donation-header.jpeg"
-          alt="Students learning digital skills" 
+          alt="A mini computer laboratory" 
           className="header-image"
         />
       </div>
