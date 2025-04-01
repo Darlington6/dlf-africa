@@ -1,11 +1,11 @@
-require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
+require('dotenv').config(); // Simplified dotenv config
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const mongoose = require("mongoose");
 
 // Validate critical environment variables first
-const requiredEnvVars = ['MONGODB_URI', 'PORT'];
+const requiredEnvVars = ['MONGODB_URI', 'PORT', 'JWT_SECRET'];
 requiredEnvVars.forEach(env => {
   if (!process.env[env]) {
     console.error(`❌ Missing required environment variable: ${env}`);
@@ -15,44 +15,39 @@ requiredEnvVars.forEach(env => {
 
 const app = express();
 
-// Enhanced CORS with security headers
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+// Enhanced CORS configuration for production
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.CLIENT_URL 
+    : "http://localhost:3000",
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
 
 // Security middleware
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.disable('x-powered-by');
 
-// Database connection with retry logic
-const connectDB = async (retries = 3) => {
+// Enhanced MongoDB connection with better error handling
+const connectDB = async () => {
   try {
     console.log('Connecting to MongoDB...');
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000, // Increased timeout
+      socketTimeoutMS: 45000, // Added socket timeout
       maxPoolSize: 10,
       retryWrites: true,
       w: 'majority'
     });
     console.log('✅ MongoDB connected successfully');
-
-    // Index handling - only in development
-    if (process.env.NODE_ENV === 'development') {
-      const User = require('./models/User');
-      await User.syncIndexes({ background: true });
-      console.log('🔄 Indexes synchronized');
-    }
   } catch (err) {
-    console.error(`❌ MongoDB connection error (${retries} retries left):`, err.message);
-    if (retries > 0) {
-      await new Promise(res => setTimeout(res, 2000));
-      return connectDB(retries - 1);
-    }
+    console.error('❌ MongoDB connection error:', err.message);
+    console.error('Connection URI used:', process.env.MONGODB_URI.replace(/\/\/.*@/, '//<credentials>@')); // Masked credentials
     process.exit(1);
   }
 };
@@ -81,15 +76,12 @@ if (process.env.NODE_ENV === "production") {
   console.log('🏗️  Production frontend configured');
 }
 
-// Enhanced error handling
+// Enhanced error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const isProduction = process.env.NODE_ENV === "production";
   
-  console.error(`[${new Date().toISOString()}] ${statusCode} - ${err.message}`, {
-    path: req.path,
-    stack: isProduction ? undefined : err.stack
-  });
+  console.error(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${statusCode} - ${err.message}`);
 
   res.status(statusCode).json({
     success: false,
@@ -98,22 +90,26 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('🛑 SIGTERM received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('💤 Process terminated');
-    process.exit(0);
-  });
-});
-
-// Start server with connection retries
+// Server initialization
 const startServer = async () => {
   try {
     await connectDB();
     const PORT = process.env.PORT || 5000;
     const server = app.listen(PORT, () => {
       console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+      console.log(`🔗 MongoDB URI: ${process.env.MONGODB_URI ? 'Configured' : 'Missing'}`);
+      console.log(`🔒 JWT Secret: ${process.env.JWT_SECRET ? 'Configured' : 'Missing'}`);
+    });
+
+    // Graceful shutdown
+    process.on('SIGTERM', () => {
+      console.log('🛑 SIGTERM received. Shutting down gracefully...');
+      server.close(() => {
+        mongoose.connection.close(false, () => {
+          console.log('💤 MongoDB connection closed');
+          process.exit(0);
+        });
+      });
     });
   } catch (err) {
     console.error('💥 Failed to start server:', err);
