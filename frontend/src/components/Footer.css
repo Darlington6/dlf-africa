@@ -2,9 +2,11 @@
 .footer {
     background-color: #003366;
     color: white;
-    padding: 3rem 1rem;
+    padding: 3rem 0; /* Changed from 3rem 1rem to remove horizontal padding */
     margin-top: 4rem;
     font-family: 'Segoe UI', system-ui, sans-serif;
+    width: 100%; /* Ensure full width */
+    overflow: hidden; /* Prevent any horizontal overflow */
   }
   
   .footer-container {
@@ -13,6 +15,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
+    padding: 0 1rem; /* Added horizontal padding to container instead */
   }
   
   .footer-section {
@@ -71,6 +74,12 @@
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 0.875rem;
+    width: 100%; /* Ensure full width */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
   /* ===== INTERACTIVE STATES ===== */
@@ -89,6 +98,7 @@
     .footer-container {
       grid-template-columns: repeat(2, 1fr);
       row-gap: 2.5rem;
+      padding: 0 1rem; /* Maintain padding in responsive views */
     }
     
     .footer-section {
@@ -98,7 +108,7 @@
   
   @media (max-width: 768px) {
     .footer {
-      padding: 2.5rem 1.5rem;
+      padding: 2.5rem 0; /* Changed from 2.5rem 1.5rem */
     }
     
     .footer h3 {
@@ -111,6 +121,7 @@
       grid-template-columns: 1fr;
       text-align: center;
       gap: 2rem;
+      padding: 0 1rem; /* Maintain padding in mobile view */
     }
     
     .footer h3::after {
