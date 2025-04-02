@@ -1,10 +1,10 @@
-require('dotenv').config(); // Simplified dotenv config
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const mongoose = require("mongoose");
 
-// Validate critical environment variables first
+// Validate environment variables
 const requiredEnvVars = ['MONGODB_URI', 'PORT', 'JWT_SECRET'];
 requiredEnvVars.forEach(env => {
   if (!process.env[env]) {
@@ -15,44 +15,66 @@ requiredEnvVars.forEach(env => {
 
 const app = express();
 
-// Enhanced CORS configuration for production
-const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CLIENT_URL 
-    : "http://localhost:3000",
+// Enhanced CORS
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL : "http://localhost:3000",
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-app.use(cors(corsOptions));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}));
 
 // Security middleware
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.disable('x-powered-by');
 
-// Enhanced MongoDB connection with better error handling
+// Debugging setup
+mongoose.set('debug', process.env.NODE_ENV !== 'production');
+
+// Database connection with enhanced logging
 const connectDB = async () => {
   try {
-    console.log('Connecting to MongoDB...');
+    console.log('🔌 Connecting to MongoDB...');
+    console.log(`Using database: ${process.env.MONGODB_URI.split('/').pop().split('?')[0]}`);
+    
     await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 10000, // Increased timeout
-      socketTimeoutMS: 45000, // Added socket timeout
-      maxPoolSize: 10,
-      retryWrites: true,
-      w: 'majority'
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10
     });
+
+    const db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+    
+    db.once('open', () => {
+      console.log('📊 Database state:', {
+        collections: Object.keys(db.collections),
+        dbName: db.name,
+        models: Object.keys(mongoose.models)
+      });
+    });
+
     console.log('✅ MongoDB connected successfully');
   } catch (err) {
-    console.error('❌ MongoDB connection error:', err.message);
-    console.error('Connection URI used:', process.env.MONGODB_URI.replace(/\/\/.*@/, '//<credentials>@')); // Masked credentials
+    console.error('❌ MongoDB connection error:', err);
     process.exit(1);
   }
 };
 
-// Route imports
+// Debug endpoint for donations
+app.get('/debug/donations', async (req, res) => {
+  try {
+    const donations = await mongoose.connection.db.collection('donations').find().toArray();
+    res.json({
+      count: donations.length,
+      latest: donations.slice(-3).reverse(),
+      stats: await mongoose.connection.db.collection('donations').stats()
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Routes
 const routes = [
   { path: "/api/auth", router: require("./routes/authRoutes") },
   { path: "/api/courses", router: require("./routes/courseRoutes") },
@@ -60,61 +82,44 @@ const routes = [
   { path: "/api/donations", router: require("./routes/donationRoutes") }
 ];
 
-// Register routes with versioning
 routes.forEach(route => {
   app.use(route.path, route.router);
   console.log(`🛣️  Route mounted: ${route.path}`);
 });
 
-// Production frontend serving
+// Production frontend
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
-  
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
   });
-  console.log('🏗️  Production frontend configured');
 }
 
-// Enhanced error handling middleware
+// Error handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const isProduction = process.env.NODE_ENV === "production";
-  
-  console.error(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${statusCode} - ${err.message}`);
-
+  console.error(`[ERROR] ${req.method} ${req.path}:`, err);
   res.status(statusCode).json({
     success: false,
-    message: isProduction && statusCode === 500 ? 'Internal Server Error' : err.message,
-    ...(!isProduction && { stack: err.stack })
+    message: err.message,
+    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
   });
 });
 
-// Server initialization
+// Start server
 const startServer = async () => {
-  try {
-    await connectDB();
-    const PORT = process.env.PORT || 5000;
-    const server = app.listen(PORT, () => {
-      console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-      console.log(`🔗 MongoDB URI: ${process.env.MONGODB_URI ? 'Configured' : 'Missing'}`);
-      console.log(`🔒 JWT Secret: ${process.env.JWT_SECRET ? 'Configured' : 'Missing'}`);
-    });
+  await connectDB();
+  const PORT = process.env.PORT || 5000;
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🔗 MongoDB: ${process.env.MONGODB_URI.includes('cluster') ? 'Atlas' : 'Local'}`);
+    console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
 
-    // Graceful shutdown
-    process.on('SIGTERM', () => {
-      console.log('🛑 SIGTERM received. Shutting down gracefully...');
-      server.close(() => {
-        mongoose.connection.close(false, () => {
-          console.log('💤 MongoDB connection closed');
-          process.exit(0);
-        });
-      });
-    });
-  } catch (err) {
-    console.error('💥 Failed to start server:', err);
-    process.exit(1);
-  }
+  process.on('SIGTERM', () => {
+    console.log('🛑 Shutting down gracefully...');
+    server.close(() => mongoose.connection.close(false));
+  });
 };
 
 startServer();
